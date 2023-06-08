@@ -7,10 +7,6 @@ fn main() {
         default_theme: Theme::Dark,
         follow_system_theme: false,
         fullscreen: true,
-        // initial_window_size: Some(egui::Vec2 {
-        //     x: SCREEN_SIZE.0 as f32,
-        //     y: SCREEN_SIZE.1 as f32,
-        // }),
         multisampling: 4,
         ..Default::default()
     };
@@ -31,7 +27,12 @@ fn main() {
     // Redirect tracing to console.log and friends:
     tracing_wasm::set_as_global_default();
 
-    let web_options = eframe::WebOptions::default();
+    // let web_options = eframe::WebOptions::default();
+    let web_options = eframe::WebOptions {
+        default_theme: Theme::Dark,
+        follow_system_theme: false,
+        ..Default::default()
+    };
 
     wasm_bindgen_futures::spawn_local(async {
         eframe::WebRunner::new()
