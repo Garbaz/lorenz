@@ -1,2 +1,1 @@
-pub mod wasm;
-pub mod native;
+pub mod app;

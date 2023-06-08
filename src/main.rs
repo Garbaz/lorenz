@@ -1,10 +1,11 @@
 use eframe::Theme;
-use egui::Slider;
+use lorenz::app::MyEguiApp;
 
 #[cfg(not(target_arch = "wasm32"))]
 fn main() {
     let native_options = eframe::NativeOptions {
-        default_theme: Theme::Light,
+        default_theme: Theme::Dark,
+        follow_system_theme: false,
         fullscreen: true,
         // initial_window_size: Some(egui::Vec2 {
         //     x: SCREEN_SIZE.0 as f32,
@@ -42,20 +43,4 @@ fn main() {
             .await
             .expect("failed to start eframe");
     });
-}
-
-pub struct MyEguiApp {
-    slider: f32,
-}
-impl MyEguiApp {
-    fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        Self { slider: 0. }
-    }
-}
-impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| {
-            ui.add(Slider::new(&mut self.slider, -10.0..=100.0))
-        });
-    }
 }
