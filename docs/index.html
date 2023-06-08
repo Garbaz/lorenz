@@ -1,16 +1,49 @@
 <!DOCTYPE html>
 <html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GOL 3D</title>
+  <title>Lorenz</title>
   <style type="text/css">
+    html,
+    body {
+      overflow: hidden;
+      margin: 0 !important;
+      padding: 0 !important;
+      height: 100%;
+      width: 100%;
+    }
 
+    /* Position canvas in center-top: */
+    canvas {
+      margin-right: auto;
+      margin-left: auto;
+      display: block;
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, 0%);
+    }
+
+    .centered {
+      margin-right: auto;
+      margin-left: auto;
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #f0f0f0;
+      font-size: 24px;
+      font-family: Ubuntu-Light, Helvetica, sans-serif;
+      text-align: center;
+    }
   </style>
 </head>
 
 <body>
+  <canvas id="the_canvas" width="800" , height="600"></canvas>
   <script type="module">
     import init from "./lorenz.js";
     window.addEventListener("load", () => {
