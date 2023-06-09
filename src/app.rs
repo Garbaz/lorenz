@@ -13,8 +13,6 @@ impl eframe::App for MyEguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.add(Slider::new(&mut self.slider, -10.0..=100.0));
-
-            ui.add(Plot::new(""));
         });
 
     }
