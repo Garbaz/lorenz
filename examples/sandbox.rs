@@ -1,7 +1,8 @@
-use lorenz::{lorenz::Lorenz, vec::V3};
+use glam::DVec3;
+use lorenz::lorenz::Lorenz;
 
 fn main() {
-    let mut state = V3::from((1., 0., 0.));
+    let mut state = DVec3::from((1., 0., 0.));
     let dt = 0.01;
 
     let lorry = Lorenz {
