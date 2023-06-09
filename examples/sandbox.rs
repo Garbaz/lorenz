@@ -1,21 +1,17 @@
-use std::time::Instant;
-
 use lorenz::{lorenz::Lorenz, vec::V3};
 
 fn main() {
-    let mut state = V3::from((0.1, 0.1, 0.1));
-    const DT: f64 = 0.1;
+    let mut state = V3::from((1., 0., 0.));
+    let dt = 0.01;
 
-    const LORENZ: Lorenz = Lorenz {
+    let lorry = Lorenz {
         rho: 28.,
         sigma: 10.,
         beta: 8. / 3.,
     };
 
-    for _ in 0..100 {
-        let t = Instant::now();
-
-        state = LORENZ.step(DT, state);
+    for _ in 0..10 {
+        state = state + lorry.step(dt, state);
 
         println!("{:?}", state);
     }
