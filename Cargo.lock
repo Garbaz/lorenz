@@ -1052,6 +1052,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glam"
+version = "0.24.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ad83ab008a4fa3b31dfa713dd41b5a9bdea1e94e4cf1e2fc274ffbd49b0271d3"
+
+[[package]]
 name = "glow"
 version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1319,6 +1325,7 @@ dependencies = [
  "console_log",
  "eframe",
  "egui",
+ "glam",
  "log",
  "tracing-wasm",
  "wasm-bindgen",
