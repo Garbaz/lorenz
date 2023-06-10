@@ -41,11 +41,34 @@ impl eframe::App for State {
             .show(ctx, |ui| {
                 TopBottomPanel::top("sliders").show_inside(ui, |ui| {
                     ui.style_mut().spacing.slider_width = 300.;
-                    ui.add(Slider::new(&mut self.number_iterations, 1..=MAX_ITERATION).text("N"));
-                    ui.add(Slider::new(&mut self.lorenz_attractor.rho, 0. ..=100.).text("ρ"));
-                    ui.add(Slider::new(&mut self.lorenz_attractor.sigma, 0. ..=100.).text("σ"));
-                    ui.add(Slider::new(&mut self.lorenz_attractor.beta, 0. ..=100.).text("β"));
-                    ui.add(Slider::new(&mut self.delta, 0.001..=0.01).text("Δt"));
+                    ui.add(
+                        Slider::new(
+                            &mut self.number_iterations,
+                            1..=MAX_ITERATION,
+                        )
+                        .text("N"),
+                    );
+                    ui.add(
+                        Slider::new(&mut self.lorenz_attractor.rho, 0. ..=100.)
+                            .text("ρ"),
+                    );
+                    ui.add(
+                        Slider::new(
+                            &mut self.lorenz_attractor.sigma,
+                            0. ..=100.,
+                        )
+                        .text("σ"),
+                    );
+                    ui.add(
+                        Slider::new(
+                            &mut self.lorenz_attractor.beta,
+                            0. ..=100.,
+                        )
+                        .text("β"),
+                    );
+                    ui.add(
+                        Slider::new(&mut self.delta, 0.001..=0.01).text("Δt"),
+                    );
                 });
 
                 TopBottomPanel::top("projections").show_inside(ui, |ui| {
@@ -68,7 +91,8 @@ impl eframe::App for State {
             Projection::XZ => DVec3::xz,
             Projection::YZ => DVec3::yz,
         };
-        let plot_points: PlotPoints = points.iter().map(|pos| proj(*pos).to_array()).collect();
+        let plot_points: PlotPoints =
+            points.iter().map(|pos| proj(*pos).to_array()).collect();
         let line = Line::new(plot_points);
 
         CentralPanel::default().show(ctx, |ui| {
