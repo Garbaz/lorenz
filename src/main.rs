@@ -1,5 +1,5 @@
 use eframe::Theme;
-use lorenz::app::MyEguiApp;
+use lorenz::app::State;
 
 #[cfg(not(target_arch = "wasm32"))]
 fn main() {
@@ -14,7 +14,7 @@ fn main() {
     eframe::run_native(
         "Lorenz",
         native_options,
-        Box::new(|cc| Box::new(MyEguiApp::new(cc))),
+        Box::new(|cc| Box::new(State::new(cc))),
     )
     .unwrap();
 }
@@ -39,7 +39,7 @@ fn main() {
             .start(
                 "the_canvas",
                 web_options,
-                Box::new(|cc| Box::new(MyEguiApp::new(cc))),
+                Box::new(|cc| Box::new(State::new(cc))),
             )
             .await
             .expect("failed to start eframe");
