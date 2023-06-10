@@ -23,7 +23,7 @@ struct LorenzState {
 
 pub struct State {
     number_iterations: usize,
-    lorenz: LorenzState,
+    lorenz_state: LorenzState,
     delta: f64,
     projection: Projection,
     last_time: f64,
@@ -33,7 +33,7 @@ impl State {
     pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         Self {
             number_iterations: MAX_ITERATION,
-            lorenz: LorenzState {
+            lorenz_state: LorenzState {
                 lorenz: Lorenz {
                     rho: 28.,
                     sigma: 10.,
@@ -64,24 +64,34 @@ impl eframe::App for State {
             .show(ctx, |ui| {
                 TopBottomPanel::top("sliders").show_inside(ui, |ui| {
                     ui.style_mut().spacing.slider_width = 300.;
+
+                    ui.add(
+                        Slider::new(
+                            &mut self.lorenz_state.lorenz.rho,
+                            0. ..=100.,
+                        )
+                        .text("ρ"),
+                    );
+                    ui.add(
+                        Slider::new(
+                            &mut self.lorenz_state.lorenz.sigma,
+                            0. ..=100.,
+                        )
+                        .text("σ"),
+                    );
+                    ui.add(
+                        Slider::new(
+                            &mut self.lorenz_state.lorenz.beta,
+                            0. ..=100.,
+                        )
+                        .text("β"),
+                    );
                     ui.add(
                         Slider::new(
                             &mut self.number_iterations,
                             1..=MAX_ITERATION,
                         )
                         .text("N"),
-                    );
-                    ui.add(
-                        Slider::new(&mut self.lorenz.lorenz.rho, 0. ..=100.)
-                            .text("ρ"),
-                    );
-                    ui.add(
-                        Slider::new(&mut self.lorenz.lorenz.sigma, 0. ..=100.)
-                            .text("σ"),
-                    );
-                    ui.add(
-                        Slider::new(&mut self.lorenz.lorenz.beta, 0. ..=100.)
-                            .text("β"),
                     );
                     ui.add(
                         Slider::new(&mut self.delta, 0.001..=0.01).text("Δt"),
@@ -109,6 +119,13 @@ impl eframe::App for State {
                     });
                     SidePanel::left("dynamic").show_inside(ui, |ui| {
                         ui.checkbox(&mut self.dynamic, "Dynamic");
+                        if ui.button("Clear").clicked() {
+                            self.lorenz_state.history.clear();
+                        }
+                        if ui.button("Reset").clicked() {
+                            self.lorenz_state.history.clear();
+                            self.lorenz_state.state = dvec3(1., 0., 0.);
+                        }
                     });
                 });
                 if self.dynamic {
@@ -122,15 +139,15 @@ impl eframe::App for State {
 
 impl State {
     fn dynamic_plot(&mut self, ctx: &egui::Context, dt: f64) {
-        let mut step = || {
-            self.lorenz.history.push_front(self.lorenz.state);
-            self.lorenz.history.truncate(100000);
-            self.lorenz.state +=
-                self.lorenz.lorenz.step(0.1 * dt, self.lorenz.state);
-        };
-
         for _ in 0..10 {
-            step();
+            self.lorenz_state
+                .history
+                .push_front(self.lorenz_state.state);
+            self.lorenz_state.history.truncate(100000);
+            self.lorenz_state.state += self
+                .lorenz_state
+                .lorenz
+                .step(0.1 * dt, self.lorenz_state.state);
         }
 
         let proj = match self.projection {
@@ -140,15 +157,17 @@ impl State {
         };
 
         let line = Line::new(
-            self.lorenz
+            self.lorenz_state
                 .history
                 .iter()
                 .map(|v| proj(*v).to_array())
                 .collect::<PlotPoints>(),
         );
 
-        let points =
-            Points::new(PlotPoints::from(proj(self.lorenz.state).to_array()));
+        let points = Points::new(PlotPoints::from(
+            proj(self.lorenz_state.state).to_array(),
+        ))
+        .radius(4.);
 
         CentralPanel::default().show(ctx, |ui| {
             Plot::new("plot")
@@ -170,7 +189,7 @@ impl State {
         let mut points = vec![];
         for _ in 0..self.number_iterations * iteration_factor {
             points.push(state);
-            state += self.lorenz.lorenz.step(self.delta, state);
+            state += self.lorenz_state.lorenz.step(self.delta, state);
         }
 
         let proj = match self.projection {
