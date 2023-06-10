@@ -1,3 +1,3 @@
 # [Lorenz Attractor in WASM & egui](https://garbaz.github.io/lorenz/)
 
-_^ Click the Title ^_
+↿ _click the title_ ↾
