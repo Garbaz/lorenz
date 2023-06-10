@@ -37,14 +37,15 @@ impl eframe::App for MyEguiApp {
                 points.push(state);
                 state += self.lorenz_attractor.step(dt, state);
             }
-            let (min, max) = points
-                .iter()
-                .fold(([f64::MAX, f64::MAX], [0., 0.]), |acc, v| {
+            let (min, max) = points.iter().fold(
+                ([f64::MAX, f64::MAX], [0., 0.]),
+                |acc, v| {
                     (
                         v.xy().min(acc.0.into()).to_array(),
                         v.xy().max(acc.1.into()).to_array(),
                     )
-                });
+                },
+            );
             let plot_points: PlotPoints = points[0..self.number_iterations]
                 .iter()
                 .map(|pos| pos.xy().to_array())
